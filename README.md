@@ -103,4 +103,4 @@ All catalog sources point to `irfan.nuvio.aio` (`fanzirfan AIO`), meaning Nuvio 
 
 ## License
 
-MIT
+GPL 3.0
