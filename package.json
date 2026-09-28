@@ -1,0 +1,31 @@
+{
+  "name": "nuvio-aio",
+  "version": "1.0.0",
+  "description": "fanzirfan AIO - All-in-One Stremio & Nuvio relay addon combining AIOMetadata, Pengu streams, and Nuvio clean subtitles",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/aio.test.ts"
+  },
+  "keywords": [
+    "stremio",
+    "nuvio",
+    "aio",
+    "relay",
+    "cloudflare-workers",
+    "hono"
+  ],
+  "author": "fanzirfan",
+  "license": "MIT",
+  "dependencies": {
+    "hono": "^4.7.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250224.0",
+    "typescript": "^5.8.2",
+    "wrangler": "^3.114.0"
+  }
+}

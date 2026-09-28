@@ -1,0 +1,14 @@
+name = "nuvio-aio"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ADDON_NAME = "fanzirfan AIO"
+ADDON_ID = "irfan.nuvio.aio"
+ADDON_DESC = "All-in-One Stremio Addon relaying AIOMetadata, Pengu Streams & Live TV, and Nuvio Clean Subtitles."
+
+# Upstream Addon Endpoints (Leave empty here, configure via Cloudflare Dashboard or /configure UI)
+DEFAULT_METADATA_URL = ""
+DEFAULT_STREAM_URL = ""
+DEFAULT_SUBS_URL = ""
