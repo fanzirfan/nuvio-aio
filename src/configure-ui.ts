@@ -241,6 +241,52 @@ export function renderConfigureHtml(params: {
           <span id="copyBtnText">Copy Manifest URL</span>
         </button>
       </div>
+
+      <!-- Section: Nuvio Collections Station -->
+      <div class="bg-[#121215] border border-zinc-800/80 rounded-xl p-4 sm:p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <label class="text-xs font-semibold uppercase tracking-wider text-zinc-300">Nuvio Collections Layout</label>
+          </div>
+          <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/40 border border-cyan-800/50 px-2 py-0.5 rounded-full">
+            88 Rows &bull; 3 Categories
+          </span>
+        </div>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          Pre-configured collection layout for Nuvio home screen. Contains Discover, Streaming Platforms, and Genres wired to this relay.
+        </p>
+
+        <div>
+          <label class="text-[11px] font-mono uppercase text-zinc-500 mb-1.5 block">Collection URL</label>
+          <div class="bg-[#09090b] border border-zinc-800 rounded-lg p-3 font-mono text-xs text-zinc-300 break-all select-all" id="collectionDisplay">
+            Calculating...
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+          <button 
+            type="button" 
+            onclick="copyCollectionUrl()" 
+            class="w-full bg-zinc-900 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800/80 hover:text-white font-medium py-2.5 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2 font-mono"
+          >
+            <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span id="copyCollectionBtnText">Copy Collection URL</span>
+          </button>
+          
+          <button 
+            type="button" 
+            onclick="downloadCollectionJson()" 
+            class="w-full bg-zinc-900 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800/80 hover:text-white font-medium py-2.5 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2 font-mono"
+          >
+            <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download collection.json
+          </button>
+        </div>
+        <p class="text-[11px] text-zinc-500 font-mono">
+          Import in Nuvio App &rarr; Settings &rarr; Collections &rarr; Import from URL or File.
+        </p>
+      </div>
     </form>
   </main>
 
@@ -259,6 +305,7 @@ export function renderConfigureHtml(params: {
     const streamInput = document.getElementById('streamUrl');
     const subsInput = document.getElementById('subsUrl');
     const manifestDisplay = document.getElementById('manifestDisplay');
+    const collectionDisplay = document.getElementById('collectionDisplay');
 
     function getAddonUrls() {
       const meta = metaInput.value.trim();
@@ -285,9 +332,32 @@ export function renderConfigureHtml(params: {
       return { httpsUrl, stremioUrl, webUrl };
     }
 
+    function getCollectionUrl() {
+      const meta = metaInput.value.trim();
+      const stream = streamInput.value.trim();
+      const subs = subsInput.value.trim();
+
+      const isDefault = (meta === defaultMeta && stream === defaultStream && subs === defaultSubs);
+
+      let collectionPath = 'collection.json';
+      if (!isDefault) {
+        const config = {
+          metadataUrl: meta,
+          streamUrl: stream,
+          subsUrl: subs
+        };
+        const encoded = btoa(JSON.stringify(config)).replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=+$/, '');
+        collectionPath = encoded + '/collection.json';
+      }
+
+      return host + '/' + collectionPath;
+    }
+
     function updateUrl() {
       const { httpsUrl } = getAddonUrls();
       manifestDisplay.textContent = httpsUrl;
+      const collUrl = getCollectionUrl();
+      collectionDisplay.textContent = collUrl;
     }
 
     function installAddon() {
@@ -308,6 +378,26 @@ export function renderConfigureHtml(params: {
       setTimeout(() => {
         textSpan.innerText = 'Copy Manifest URL';
       }, 2000);
+    }
+
+    async function copyCollectionUrl() {
+      const url = getCollectionUrl();
+      await navigator.clipboard.writeText(url);
+      const textSpan = document.getElementById('copyCollectionBtnText');
+      textSpan.innerText = 'Copied to Clipboard!';
+      setTimeout(() => {
+        textSpan.innerText = 'Copy Collection URL';
+      }, 2000);
+    }
+
+    function downloadCollectionJson() {
+      const url = getCollectionUrl();
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'collection.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
 
     function resetDefaults() {

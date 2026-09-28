@@ -122,4 +122,30 @@ describe('fanzirfan AIO Addon Test Suite', () => {
     assert.ok(data.metas.length > 0);
     console.log(`Successfully received ${data.metas.length} catalog items from AIOMetadata!`);
   });
+
+  it('should serve Nuvio collection layout at /collection.json', async () => {
+    const res = await app.request('/collection.json');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.headers.get('content-type'), 'application/json; charset=utf-8');
+    const data = (await res.json()) as any[];
+
+    assert.ok(Array.isArray(data));
+    assert.strictEqual(data.length, 3);
+    assert.strictEqual(data[0].id, 'collections-discover');
+    assert.strictEqual(data[1].id, 'collections-streaming');
+    assert.strictEqual(data[2].id, 'genres');
+
+    // Confirm addonId matches
+    const firstSource = data[0].folders[0].sources[0];
+    assert.strictEqual(firstSource.addonId, 'irfan.nuvio.aio');
+  });
+
+  it('should serve parameterized collection layout at /:config/collection.json', async () => {
+    const res = await app.request(`/${encodedConfig}/collection.json`);
+    assert.strictEqual(res.status, 200);
+    const data = (await res.json()) as any[];
+    assert.ok(Array.isArray(data));
+    assert.strictEqual(data.length, 3);
+  });
 });
+

@@ -81,6 +81,26 @@ npm run deploy
 
 ---
 
+## Nuvio Collections Home Layout
+
+The addon serves a pre-configured Nuvio collection layout containing 88 catalog sources mapped across three top-level categories:
+
+1. **Discover:** Popular, Trending, Top Rated, and Upcoming.
+2. **Streaming Platforms:** Netflix, Disney+, Apple TV+, Prime Video, Max, Hulu, Paramount+, and Peacock.
+3. **Genres:** Action, Comedy, Drama, Sci-Fi, Horror, Animation, and more.
+
+All catalog sources point to `irfan.nuvio.aio` (`fanzirfan AIO`), meaning Nuvio loads all catalog carousels directly from this relay.
+
+### How to Import into Nuvio:
+- **Via URL:** In Nuvio Settings &rarr; Collections &rarr; Import from URL, paste:
+  ```
+  https://<your-worker>.<subdomain>.workers.dev/collection.json
+  ```
+  (Or your encoded custom config path: `https://<your-worker>.<subdomain>.workers.dev/<config>/collection.json`)
+- **Via File:** Download `collection.json` from the web UI (`/`) and upload it under Nuvio Settings &rarr; Collections &rarr; Import from File.
+
+---
+
 ## License
 
 MIT

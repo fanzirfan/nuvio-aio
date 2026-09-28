@@ -5,6 +5,7 @@ import { decodeConfig, getResolvedConfig } from './config.ts';
 import { getCombinedManifest } from './manifest.ts';
 import { relayCatalog, relayMeta, relayStream, relaySubtitles } from './relay.ts';
 import { renderConfigureHtml } from './configure-ui.ts';
+import { getCollectionJson } from './collection.ts';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -110,6 +111,28 @@ app.get('/:config/manifest.json', async (c) => {
   const config = getResolvedConfig(c.env, userConfig);
   const manifest = await getCombinedManifest(config);
   return c.json(manifest, 200, {
+    'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Nuvio Collection Layout Endpoints
+// ---------------------------------------------------------------------------
+app.get('/collection.json', (c) => {
+  const config = getResolvedConfig(c.env);
+  const json = getCollectionJson(config.addonId);
+  return c.text(json, 200, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+  });
+});
+
+app.get('/:config/collection.json', (c) => {
+  const userConfig = decodeConfig(c.req.param('config'));
+  const config = getResolvedConfig(c.env, userConfig);
+  const json = getCollectionJson(config.addonId);
+  return c.text(json, 200, {
+    'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
   });
 });
