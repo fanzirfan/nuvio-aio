@@ -145,6 +145,19 @@ npm run deploy
 
 ---
 
+## Disclaimer
+
+> [!IMPORTANT]
+> **Legal Disclaimer & Content Hosting Policy**
+>
+> 1. **No Hosting of Media:** This project (**nuvio-aio**) does **NOT** host, store, cache, upload, scrape, or transmit any video, audio, torrent, or copyrighted media files on any server, edge worker, or database. 
+> 2. **Middleware & Protocol Relay Only:** This software functions strictly as a lightweight middleware, proxy, and protocol adapter conforming to the public Stremio Addon specification. It merely translates and relays HTTP requests between the client application (e.g., Stremio or Nuvio) and third-party upstream endpoints explicitly specified by the user or configuration.
+> 3. **Third-Party Services:** All metadata, media streams, live broadcasts, and subtitles are sourced independently from external, third-party services (such as AIOMetadata, Pengu, OpenSubtitles, SubDL, etc.). The author and contributors of this repository have no control over, affiliation with, or responsibility for the content, licensing, or availability provided by these upstream entities.
+> 4. **User Responsibility:** Users are solely responsible for ensuring that their use of this software complies with all applicable local, national, and international laws, regulations, and copyright restrictions. The author and contributors assume no liability for any misuse, copyright infringement, or damages arising from the use of this project.
+> 5. **Educational Purpose:** This project is provided as free, open-source software strictly for educational, technical interoperability, and research purposes under the GPL-3.0 license.
+
+---
+
 ## License
 
 This project is licensed under the [GNU General Public License v3.0 (GPL 3.0)](LICENSE) &copy; fanzirfan.

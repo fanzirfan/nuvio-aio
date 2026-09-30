@@ -34,7 +34,12 @@ export function decodeConfig(rawConfig?: string): AddonConfig {
     while (base64.length % 4 !== 0) {
       base64 += '=';
     }
-    const decoded = atob(base64);
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    const decoded = new TextDecoder().decode(bytes);
     return JSON.parse(decoded) as AddonConfig;
   } catch {
     try {
@@ -51,7 +56,12 @@ export function decodeConfig(rawConfig?: string): AddonConfig {
  */
 export function encodeConfig(config: AddonConfig): string {
   const json = JSON.stringify(config);
-  return btoa(json).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
 /**

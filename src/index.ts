@@ -52,14 +52,17 @@ app.get('/branding/:path{.+}', (c) => serveAsset(c, c.req.param('path')));
 // Configuration Web UI
 // ---------------------------------------------------------------------------
 app.get('/', (c) => {
-  const config = getResolvedConfig(c.env);
+  const serverConfig = getResolvedConfig(c.env);
   const currentHost = new URL(c.req.url).origin;
   const html = renderConfigureHtml({
     currentHost,
-    defaultMetadataUrl: config.metadataBase + '/manifest.json',
-    defaultStreamUrl: config.streamBase + '/manifest.json',
-    defaultSubsUrl: config.subsBase + '/manifest.json',
-    addonName: config.addonName,
+    metadataUrl: serverConfig.metadataBase ? `${serverConfig.metadataBase}/manifest.json` : '',
+    streamUrl: serverConfig.streamBase ? `${serverConfig.streamBase}/manifest.json` : '',
+    subsUrl: serverConfig.subsBase ? `${serverConfig.subsBase}/manifest.json` : '',
+    serverDefaultMeta: serverConfig.metadataBase ? `${serverConfig.metadataBase}/manifest.json` : '',
+    serverDefaultStream: serverConfig.streamBase ? `${serverConfig.streamBase}/manifest.json` : '',
+    serverDefaultSubs: serverConfig.subsBase ? `${serverConfig.subsBase}/manifest.json` : '',
+    addonName: serverConfig.addonName,
   });
   return c.html(html);
 });
@@ -71,12 +74,16 @@ app.get('/configure', (c) => {
 app.get('/:config/configure', (c) => {
   const userConfig = decodeConfig(c.req.param('config'));
   const config = getResolvedConfig(c.env, userConfig);
+  const serverConfig = getResolvedConfig(c.env);
   const currentHost = new URL(c.req.url).origin;
   const html = renderConfigureHtml({
     currentHost,
-    defaultMetadataUrl: config.metadataBase + '/manifest.json',
-    defaultStreamUrl: config.streamBase + '/manifest.json',
-    defaultSubsUrl: config.subsBase + '/manifest.json',
+    metadataUrl: config.metadataBase ? `${config.metadataBase}/manifest.json` : '',
+    streamUrl: config.streamBase ? `${config.streamBase}/manifest.json` : '',
+    subsUrl: config.subsBase ? `${config.subsBase}/manifest.json` : '',
+    serverDefaultMeta: serverConfig.metadataBase ? `${serverConfig.metadataBase}/manifest.json` : '',
+    serverDefaultStream: serverConfig.streamBase ? `${serverConfig.streamBase}/manifest.json` : '',
+    serverDefaultSubs: serverConfig.subsBase ? `${serverConfig.subsBase}/manifest.json` : '',
     addonName: config.addonName,
   });
   return c.html(html);

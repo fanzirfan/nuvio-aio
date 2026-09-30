@@ -1,8 +1,11 @@
 export function renderConfigureHtml(params: {
   currentHost: string;
-  defaultMetadataUrl: string;
-  defaultStreamUrl: string;
-  defaultSubsUrl: string;
+  metadataUrl: string;
+  streamUrl: string;
+  subsUrl: string;
+  serverDefaultMeta: string;
+  serverDefaultStream: string;
+  serverDefaultSubs: string;
   addonName: string;
 }): string {
   return `<!DOCTYPE html>
@@ -166,7 +169,7 @@ export function renderConfigureHtml(params: {
           <input 
             type="text" 
             id="metadataUrl" 
-            value="${params.defaultMetadataUrl}" 
+            value="${params.metadataUrl}" 
             placeholder="https://aiometadata.../manifest.json" 
             class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
@@ -191,7 +194,7 @@ export function renderConfigureHtml(params: {
           <input 
             type="text" 
             id="streamUrl" 
-            value="${params.defaultStreamUrl}" 
+            value="${params.streamUrl}" 
             placeholder="https://pengu.uk/.../manifest.json" 
             class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
@@ -216,7 +219,7 @@ export function renderConfigureHtml(params: {
           <input 
             type="text" 
             id="subsUrl" 
-            value="${params.defaultSubsUrl}" 
+            value="${params.subsUrl}" 
             placeholder="https://nuvio-subs.../manifest.json" 
             class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
@@ -380,9 +383,9 @@ export function renderConfigureHtml(params: {
   </footer>
 
   <script>
-    const defaultMeta = ${JSON.stringify(params.defaultMetadataUrl)};
-    const defaultStream = ${JSON.stringify(params.defaultStreamUrl)};
-    const defaultSubs = ${JSON.stringify(params.defaultSubsUrl)};
+    const serverDefaultMeta = ${JSON.stringify(params.serverDefaultMeta)};
+    const serverDefaultStream = ${JSON.stringify(params.serverDefaultStream)};
+    const serverDefaultSubs = ${JSON.stringify(params.serverDefaultSubs)};
     const host = window.location.origin;
 
     const metaInput = document.getElementById('metadataUrl');
@@ -391,26 +394,38 @@ export function renderConfigureHtml(params: {
     const manifestDisplay = document.getElementById('manifestDisplay');
     const collectionDisplay = document.getElementById('collectionDisplay');
 
+    function safeBtoa(str) {
+      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      })).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
     function getAddonUrls() {
       const meta = metaInput.value.trim();
       const stream = streamInput.value.trim();
       const subs = subsInput.value.trim();
 
-      const isDefault = (meta === defaultMeta && stream === defaultStream && subs === defaultSubs);
+      const isEmpty = (!meta && !stream && !subs);
+      const hasServerDefaults = Boolean(serverDefaultMeta || serverDefaultStream || serverDefaultSubs);
+      const matchesServerDefaults = hasServerDefaults && (
+        meta === serverDefaultMeta &&
+        stream === serverDefaultStream &&
+        subs === serverDefaultSubs
+      );
 
       let manifestPath = 'manifest.json';
-      if (!isDefault) {
+      if (!isEmpty && !matchesServerDefaults) {
         const config = {
           metadataUrl: meta,
           streamUrl: stream,
           subsUrl: subs
         };
-        const encoded = btoa(JSON.stringify(config)).replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=+$/, '');
+        const encoded = safeBtoa(JSON.stringify(config));
         manifestPath = encoded + '/manifest.json';
       }
 
       const httpsUrl = host + '/' + manifestPath;
-      const stremioUrl = httpsUrl.replace(/^https?:\\/\\//, 'stremio://');
+      const stremioUrl = httpsUrl.replace(/^https?:\/\//, 'stremio://');
       const webUrl = 'https://web.stremio.com/#/addons?addon=' + encodeURIComponent(httpsUrl);
 
       return { httpsUrl, stremioUrl, webUrl };
@@ -421,16 +436,22 @@ export function renderConfigureHtml(params: {
       const stream = streamInput.value.trim();
       const subs = subsInput.value.trim();
 
-      const isDefault = (meta === defaultMeta && stream === defaultStream && subs === defaultSubs);
+      const isEmpty = (!meta && !stream && !subs);
+      const hasServerDefaults = Boolean(serverDefaultMeta || serverDefaultStream || serverDefaultSubs);
+      const matchesServerDefaults = hasServerDefaults && (
+        meta === serverDefaultMeta &&
+        stream === serverDefaultStream &&
+        subs === serverDefaultSubs
+      );
 
       let collectionPath = 'collection.json';
-      if (!isDefault) {
+      if (!isEmpty && !matchesServerDefaults) {
         const config = {
           metadataUrl: meta,
           streamUrl: stream,
           subsUrl: subs
         };
-        const encoded = btoa(JSON.stringify(config)).replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=+$/, '');
+        const encoded = safeBtoa(JSON.stringify(config));
         collectionPath = encoded + '/collection.json';
       }
 
@@ -485,9 +506,9 @@ export function renderConfigureHtml(params: {
     }
 
     function resetDefaults() {
-      metaInput.value = defaultMeta;
-      streamInput.value = defaultStream;
-      subsInput.value = defaultSubs;
+      metaInput.value = serverDefaultMeta;
+      streamInput.value = serverDefaultStream;
+      subsInput.value = serverDefaultSubs;
       updateUrl();
     }
 
