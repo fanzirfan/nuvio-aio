@@ -395,9 +395,12 @@ export function renderConfigureHtml(params: {
     const collectionDisplay = document.getElementById('collectionDisplay');
 
     function safeBtoa(str) {
-      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-        return String.fromCharCode('0x' + p1);
-      })).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      const bytes = new TextEncoder().encode(str);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary).replaceAll('+', '-').replaceAll('/', '_').replace(/=+$/, '');
     }
 
     function getAddonUrls() {
@@ -425,7 +428,7 @@ export function renderConfigureHtml(params: {
       }
 
       const httpsUrl = host + '/' + manifestPath;
-      const stremioUrl = httpsUrl.replace(/^https?:\/\//, 'stremio://');
+      const stremioUrl = httpsUrl.replace('https://', 'stremio://').replace('http://', 'stremio://');
       const webUrl = 'https://web.stremio.com/#/addons?addon=' + encodeURIComponent(httpsUrl);
 
       return { httpsUrl, stremioUrl, webUrl };
