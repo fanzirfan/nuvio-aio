@@ -17,7 +17,7 @@ export function renderConfigureHtml(params: {
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#0D0E13">
   <meta name="color-scheme" content="dark">
   <meta property="og:title" content="${params.addonName} &mdash; All-in-One Stremio &amp; Nuvio Relay">
   <meta property="og:description" content="Single unified endpoint combining rich metadata catalogs, multi-provider streams with Live TV, and ad-free subtitles.">
@@ -26,107 +26,141 @@ export function renderConfigureHtml(params: {
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-            mono: ['Geist Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            sans: ['"Space Grotesk"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
           },
           colors: {
-            brand: {
-              50: '#f4f4f5',
-              100: '#e4e4e7',
-              200: '#d4d4d8',
-              800: '#27272a',
-              900: '#18181b',
-              950: '#09090b',
+            lavender: {
+              DEFAULT: '#B8A9FF',
+              hover: '#A594FF',
+              dark: '#2A244D',
+            },
+            mint: {
+              DEFAULT: '#A7F3D0',
+              hover: '#86EFAC',
+              dark: '#133929',
+            },
+            neo: {
+              bg: '#0D0E13',
+              card: '#161720',
+              cardHeader: '#12131A',
+              input: '#0A0B0F',
+              border: '#2A2C3C',
+              borderDark: '#050608',
+              muted: '#9496A8',
             }
+          },
+          boxShadow: {
+            'neo-sm': '2px 2px 0px #050608',
+            'neo': '4px 4px 0px #050608',
+            'neo-lg': '6px 6px 0px #050608',
+            'neo-lavender': '3px 3px 0px #B8A9FF',
+            'neo-mint': '3px 3px 0px #A7F3D0',
           }
         }
       }
     }
   </script>
   <style>
-    body { font-family: 'Geist', sans-serif; }
-    code, .font-mono { font-family: 'Geist Mono', monospace; }
+    body {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0D0E13;
+      background-image: radial-gradient(#26283A 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #EDEDF2;
+    }
+    code, .font-mono { font-family: 'JetBrains Mono', monospace; }
   </style>
 </head>
-<body class="bg-[#09090b] text-[#f4f4f5] min-h-screen flex flex-col justify-between antialiased selection:bg-zinc-800 selection:text-white">
-  <!-- Top Bar -->
-  <header class="border-b border-zinc-800/80 bg-[#09090b]/80 backdrop-blur-md sticky top-0 z-30">
-    <div class="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
-      <div class="flex items-center space-x-2.5">
-        <div class="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-800 p-1 flex items-center justify-center shadow-sm">
-          <svg class="w-full h-full" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-[#B8A9FF] selection:text-black">
+  <!-- Top Navigation / Brand Bar -->
+  <header class="border-b-2 border-black bg-[#12131A]/90 backdrop-blur-md sticky top-0 z-30">
+    <div class="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <!-- Logo Emblem -->
+        <a href="/" class="w-9 h-9 rounded-lg bg-[#161720] border-2 border-black shadow-neo-sm flex items-center justify-center p-1.5 transition-transform hover:-rotate-3">
+          <svg class="w-full h-full text-zinc-100" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
             <g transform="translate(19.2, 19.2) scale(0.85)">
-              <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64" stroke="#f4f4f5" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64" />
             </g>
           </svg>
+        </a>
+        <div class="flex items-center space-x-2">
+          <span class="text-base font-extrabold tracking-tight text-white">${params.addonName}</span>
+          <span class="text-[11px] font-mono font-bold bg-[#A7F3D0] text-black border-2 border-black px-2 py-0.5 rounded shadow-[1.5px_1.5px_0px_#000]">v1.0.0</span>
         </div>
-        <span class="text-sm font-semibold tracking-tight text-zinc-100">${params.addonName}</span>
-        <span class="text-[11px] text-zinc-500 font-mono bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">v1.0.0</span>
       </div>
-      <div class="flex items-center space-x-2 text-xs text-zinc-400">
-        <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 px-2 py-0.5 rounded-full">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <div class="flex items-center space-x-3 text-xs">
+        <span class="font-mono font-bold bg-[#161720] text-[#A7F3D0] border-2 border-black px-2.5 py-1 rounded-lg shadow-neo-sm inline-flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-[#A7F3D0] animate-pulse"></span>
           Edge Active
         </span>
       </div>
     </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- Main Container -->
   <main class="max-w-2xl mx-auto w-full px-4 py-8 flex-1">
-    <!-- Header Title -->
-    <div class="mb-6">
-      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900/90 border border-zinc-800 text-[11px] font-mono text-zinc-300 mb-2.5">
-        <svg class="w-3 h-3 text-zinc-200" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64"/>
-        </svg>
-        <span>Nuvio Ecosystem &bull; Stremio Protocol</span>
+    <!-- Hero / Headline Box -->
+    <div class="mb-8 bg-[#161720] border-2 border-black rounded-2xl p-6 shadow-neo">
+      <div class="inline-block bg-[#B8A9FF] text-black border-2 border-black font-mono font-bold text-xs uppercase px-2.5 py-1 rounded shadow-neo-sm mb-3">
+        Nuvio Ecosystem &bull; All-in-One Engine
       </div>
-      <h1 class="text-xl font-medium tracking-tight text-zinc-100">All-in-One Relay Engine</h1>
-      <p class="text-xs text-zinc-400 mt-1 leading-relaxed">
-        Single unified Stremio endpoint combining rich metadata catalogs, multi-provider streams with Live TV, and ad-free subtitles.
+      <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white">Nuvio All-in-One Relay</h1>
+      <p class="text-sm font-medium text-zinc-400 mt-2 leading-relaxed">
+        Unified streaming middleware built specifically for Nuvio (and compatible with Stremio). Merges rich catalogs, multi-provider streams with Live TV, and clean ad-free subtitles.
       </p>
     </div>
 
     <!-- Overview Badges -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-6">
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-lg p-3">
-        <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Metadata & Catalogs</div>
-        <div class="text-xs font-semibold text-zinc-200 mt-1">AIOMetadata</div>
-        <div class="text-[11px] text-zinc-400 mt-0.5">33+ Curated Catalogs</div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+      <div class="bg-[#161720] border-2 border-black rounded-xl p-4 shadow-neo">
+        <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 bg-[#B8A9FF] border border-black rounded-sm inline-block"></span>
+          Metadata &amp; Catalogs
+        </div>
+        <div class="text-sm font-extrabold text-white mt-1.5">AIOMetadata</div>
+        <div class="text-[11px] font-mono font-medium text-zinc-400 mt-0.5">33+ Curated Catalogs</div>
       </div>
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-lg p-3">
-        <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Streams & Channels</div>
-        <div class="text-xs font-semibold text-zinc-200 mt-1">PenguPlay</div>
-        <div class="text-[11px] text-zinc-400 mt-0.5">VOD & Live TV Engine</div>
+      <div class="bg-[#161720] border-2 border-black rounded-xl p-4 shadow-neo">
+        <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 bg-[#A7F3D0] border border-black rounded-sm inline-block"></span>
+          Streams &amp; Channels
+        </div>
+        <div class="text-sm font-extrabold text-white mt-1.5">PenguPlay</div>
+        <div class="text-[11px] font-mono font-medium text-zinc-400 mt-0.5">VOD &amp; Live TV Engine</div>
       </div>
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-lg p-3">
-        <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Zero-Ad Subtitles</div>
-        <div class="text-xs font-semibold text-zinc-200 mt-1">Nuvio Subs + Pengu</div>
-        <div class="text-[11px] text-zinc-400 mt-0.5">Auto-Merged & Cleaned</div>
+      <div class="bg-[#161720] border-2 border-black rounded-xl p-4 shadow-neo">
+        <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 bg-[#FDE68A] border border-black rounded-sm inline-block"></span>
+          Zero-Ad Subtitles
+        </div>
+        <div class="text-sm font-extrabold text-white mt-1.5">Nuvio Subs + Pengu</div>
+        <div class="text-[11px] font-mono font-medium text-zinc-400 mt-0.5">Auto-Merged &amp; Cleaned</div>
       </div>
     </div>
 
-    <form id="configForm" class="space-y-4" onsubmit="event.preventDefault();">
+    <form id="configForm" class="space-y-6" onsubmit="event.preventDefault();">
       <!-- Section 1: Metadata Upstream -->
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-xl p-4 sm:p-5">
-        <div class="flex items-center justify-between mb-1.5">
-          <label for="metadataUrl" class="text-xs font-semibold uppercase tracking-wider text-zinc-300">
+      <div class="bg-[#161720] border-2 border-black rounded-2xl p-5 sm:p-6 shadow-neo space-y-3">
+        <div class="flex items-center justify-between">
+          <label for="metadataUrl" class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-200 flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 bg-[#B8A9FF] border border-black rounded-sm inline-block"></span>
             Metadata Provider
           </label>
-          <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">
+          <span class="text-[11px] text-zinc-400 font-mono font-bold bg-[#0A0B0F] border border-black px-1.5 py-0.5 rounded">
             catalog / meta
           </span>
         </div>
-        <p class="text-xs text-zinc-400 mb-2.5">
-          Powers home carousels, genre filters, and detailed movie/series metadata.
+        <p class="text-xs text-zinc-400 font-medium">
+          Powers Nuvio home carousels, genre filters, and detailed movie/series metadata.
         </p>
         <div class="relative">
           <input 
@@ -134,23 +168,24 @@ export function renderConfigureHtml(params: {
             id="metadataUrl" 
             value="${params.defaultMetadataUrl}" 
             placeholder="https://aiometadata.../manifest.json" 
-            class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3.5 py-2 text-xs font-mono text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+            class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
         </div>
       </div>
 
       <!-- Section 2: Stream Upstream -->
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-xl p-4 sm:p-5">
-        <div class="flex items-center justify-between mb-1.5">
-          <label for="streamUrl" class="text-xs font-semibold uppercase tracking-wider text-zinc-300">
-            Stream & Live TV Provider
+      <div class="bg-[#161720] border-2 border-black rounded-2xl p-5 sm:p-6 shadow-neo space-y-3">
+        <div class="flex items-center justify-between">
+          <label for="streamUrl" class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-200 flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 bg-[#A7F3D0] border border-black rounded-sm inline-block"></span>
+            Stream &amp; Live TV Provider
           </label>
-          <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">
+          <span class="text-[11px] text-zinc-400 font-mono font-bold bg-[#0A0B0F] border border-black px-1.5 py-0.5 rounded">
             stream / pp-live
           </span>
         </div>
-        <p class="text-xs text-zinc-400 mb-2.5">
-          Supplies multi-source video playback, quality selectors, and live broadcast channels.
+        <p class="text-xs text-zinc-400 font-medium">
+          Supplies multi-source video playback, quality selectors, and live broadcast channels to Nuvio.
         </p>
         <div class="relative">
           <input 
@@ -158,23 +193,24 @@ export function renderConfigureHtml(params: {
             id="streamUrl" 
             value="${params.defaultStreamUrl}" 
             placeholder="https://pengu.uk/.../manifest.json" 
-            class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3.5 py-2 text-xs font-mono text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+            class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
         </div>
       </div>
 
       <!-- Section 3: Subtitles Upstream -->
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-xl p-4 sm:p-5">
-        <div class="flex items-center justify-between mb-1.5">
-          <label for="subsUrl" class="text-xs font-semibold uppercase tracking-wider text-zinc-300">
+      <div class="bg-[#161720] border-2 border-black rounded-2xl p-5 sm:p-6 shadow-neo space-y-3">
+        <div class="flex items-center justify-between">
+          <label for="subsUrl" class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-200 flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 bg-[#FDE68A] border border-black rounded-sm inline-block"></span>
             Subtitle Provider
           </label>
-          <span class="text-[10px] font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">
+          <span class="text-[11px] text-zinc-400 font-mono font-bold bg-[#0A0B0F] border border-black px-1.5 py-0.5 rounded">
             subtitles (parallel)
           </span>
         </div>
-        <p class="text-xs text-zinc-400 mb-2.5">
-          Fetches sanitized, ad-free subtitles first, then appends secondary provider subtitles.
+        <p class="text-xs text-zinc-400 font-medium">
+          Fetches sanitized, ad-free subtitles first, then appends secondary provider subtitles for Nuvio playback.
         </p>
         <div class="relative">
           <input 
@@ -182,130 +218,142 @@ export function renderConfigureHtml(params: {
             id="subsUrl" 
             value="${params.defaultSubsUrl}" 
             placeholder="https://nuvio-subs.../manifest.json" 
-            class="w-full bg-[#09090b] border border-zinc-800 rounded-lg px-3.5 py-2 text-xs font-mono text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition"
+            class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
         </div>
       </div>
 
       <!-- Connection Health Diagnostics Box -->
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-xl p-4 sm:p-5">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-zinc-600 inline-block" id="diagIndicator"></span>
-            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Upstream Health Check</span>
+      <div class="bg-[#161720] border-2 border-black rounded-2xl overflow-hidden shadow-neo">
+        <div class="px-5 py-3.5 border-b-2 border-black bg-[#12131A] flex items-center justify-between">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-3 h-3 rounded-full border border-black bg-zinc-600 inline-block shadow-[1px_1px_0px_#000]" id="diagIndicator"></span>
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-200">Live Upstream Healthcheck</span>
           </div>
           <button 
             type="button" 
             id="testBtn" 
             onclick="testUpstreams()" 
-            class="text-xs px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-200 hover:bg-zinc-700 hover:text-white transition font-mono border border-zinc-700 disabled:opacity-50"
+            class="text-xs bg-[#A7F3D0] hover:bg-[#86EFAC] text-black px-3 py-1.5 rounded-lg font-mono font-bold transition-all border-2 border-black shadow-neo-sm hover:translate-x-[-1px] hover:translate-y-[-1px] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
           >
-            Run Ping Test
+            <svg class="w-3.5 h-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <span>Run Ping Test</span>
           </button>
         </div>
-        <div id="debugResults" class="space-y-2 text-xs font-mono">
-          <div class="flex items-center justify-between py-1 border-b border-zinc-800/50">
-            <span class="text-zinc-400">Metadata (AIOMetadata)</span>
-            <span id="metaStatus" class="text-zinc-600">STANDBY</span>
+        <div id="debugResults" class="p-5 space-y-2.5 text-xs font-mono">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-[#0A0B0F] border-2 border-black gap-1 shadow-[2px_2px_0px_#050608]">
+            <span class="text-zinc-300 font-bold">Metadata (AIOMetadata)</span>
+            <span id="metaStatus" class="text-zinc-500 font-semibold">STANDBY</span>
           </div>
-          <div class="flex items-center justify-between py-1 border-b border-zinc-800/50">
-            <span class="text-zinc-400">Stream (PenguPlay)</span>
-            <span id="streamStatus" class="text-zinc-600">STANDBY</span>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-[#0A0B0F] border-2 border-black gap-1 shadow-[2px_2px_0px_#050608]">
+            <span class="text-zinc-300 font-bold">Stream (PenguPlay)</span>
+            <span id="streamStatus" class="text-zinc-500 font-semibold">STANDBY</span>
           </div>
-          <div class="flex items-center justify-between py-1">
-            <span class="text-zinc-400">Subtitles (Nuvio Subs)</span>
-            <span id="subsStatus" class="text-zinc-600">STANDBY</span>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-[#0A0B0F] border-2 border-black gap-1 shadow-[2px_2px_0px_#050608]">
+            <span class="text-zinc-300 font-bold">Subtitles (Nuvio Subs)</span>
+            <span id="subsStatus" class="text-zinc-500 font-semibold">STANDBY</span>
           </div>
         </div>
       </div>
 
       <!-- Manifest Output & Installation Station -->
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-xl p-4 sm:p-5 space-y-4">
+      <div class="bg-[#161720] border-2 border-black rounded-2xl p-5 sm:p-6 shadow-neo space-y-4">
         <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Active Manifest Endpoint</label>
-            <button type="button" onclick="resetDefaults()" class="text-[11px] text-zinc-500 hover:text-zinc-300 font-mono transition">
-              Reset to Defaults
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 bg-[#B8A9FF] border border-black rounded-sm inline-block"></span>
+              Active Addon Endpoint (Nuvio &amp; Stremio)
+            </label>
+            <button type="button" onclick="resetDefaults()" class="text-[11px] text-zinc-400 hover:text-white font-mono font-bold underline transition">
+              Reset Defaults
             </button>
           </div>
-          <div class="bg-[#09090b] border border-zinc-800 rounded-lg p-3 font-mono text-xs text-zinc-300 break-all select-all" id="manifestDisplay">
+          <div class="bg-[#0A0B0F] border-2 border-black rounded-xl p-3 font-mono font-bold text-xs text-zinc-200 break-all select-all shadow-[2px_2px_0px_#050608]" id="manifestDisplay">
             Calculating...
           </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
           <button 
             type="button" 
             onclick="installAddon()" 
-            class="w-full bg-zinc-100 text-zinc-950 hover:bg-white font-medium py-2.5 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2 font-mono shadow-sm"
+            title="Install to Stremio or Nuvio"
+            class="w-full bg-[#B8A9FF] hover:bg-[#A594FF] text-black font-extrabold text-sm py-3 px-4 rounded-xl border-2 border-black shadow-neo transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 font-mono cursor-pointer"
           >
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            Install to Stremio (App)
+            <svg class="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            <span>Install to Nuvio / Stremio</span>
           </button>
           
           <button 
             type="button" 
             onclick="openStremioWeb()" 
-            class="w-full bg-zinc-900 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800/80 hover:text-white font-medium py-2.5 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2 font-mono"
+            class="w-full bg-[#161720] hover:bg-[#1E202B] text-zinc-100 font-bold text-sm py-3 px-4 rounded-xl border-2 border-black shadow-neo transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 font-mono cursor-pointer"
           >
-            <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open in Stremio Web
+            <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span>Open in Stremio Web</span>
           </button>
         </div>
 
         <button 
           type="button" 
           onclick="copyAddonUrl()" 
-          class="w-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200 font-medium py-2 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2 font-mono"
+          id="copyBtn"
+          class="w-full bg-[#0A0B0F] hover:bg-[#161720] text-zinc-200 border-2 border-black rounded-xl py-3 px-4 text-xs font-mono font-bold shadow-neo-sm transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-2 cursor-pointer"
         >
-          <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <svg class="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
           <span id="copyBtnText">Copy Manifest URL</span>
         </button>
+        <p class="text-[11px] text-zinc-500 font-mono">
+          For Nuvio: Tap "Install to Nuvio / Stremio" or paste the copied manifest URL into Nuvio Settings &rarr; Addons.
+        </p>
       </div>
 
       <!-- Section: Nuvio Collections Station -->
-      <div class="bg-[#121215] border border-zinc-800/80 rounded-xl p-4 sm:p-5 space-y-4">
+      <div class="bg-[#161720] border-2 border-black rounded-2xl p-5 sm:p-6 shadow-neo space-y-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-            <label class="text-xs font-semibold uppercase tracking-wider text-zinc-300">Nuvio Collections Layout</label>
+            <span class="w-2.5 h-2.5 bg-[#A7F3D0] border border-black rounded-sm inline-block"></span>
+            <label class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-200">Nuvio Collections Layout</label>
           </div>
-          <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/40 border border-cyan-800/50 px-2 py-0.5 rounded-full">
+          <span class="text-[11px] font-mono font-bold text-black bg-[#A7F3D0] border-2 border-black px-2 py-0.5 rounded shadow-[1.5px_1.5px_0px_#000]">
             88 Rows &bull; 3 Categories
           </span>
         </div>
-        <p class="text-xs text-zinc-400 leading-relaxed">
+        <p class="text-xs text-zinc-400 font-medium leading-relaxed">
           Pre-configured collection layout for Nuvio home screen. Contains Discover, Streaming Platforms, and Genres wired to this relay.
         </p>
 
         <div>
-          <label class="text-[11px] font-mono uppercase text-zinc-500 mb-1.5 block">Collection URL</label>
-          <div class="bg-[#09090b] border border-zinc-800 rounded-lg p-3 font-mono text-xs text-zinc-300 break-all select-all" id="collectionDisplay">
+          <label class="text-[11px] font-mono font-bold uppercase text-zinc-400 mb-1.5 block">Collection URL</label>
+          <div class="bg-[#0A0B0F] border-2 border-black rounded-xl p-3 font-mono font-bold text-xs text-zinc-200 break-all select-all shadow-[2px_2px_0px_#050608]" id="collectionDisplay">
             Calculating...
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
           <button 
             type="button" 
             onclick="copyCollectionUrl()" 
-            class="w-full bg-zinc-900 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800/80 hover:text-white font-medium py-2.5 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2 font-mono"
+            id="copyCollectionBtn"
+            class="w-full bg-[#161720] hover:bg-[#1E202B] text-zinc-100 font-bold text-xs py-3 px-4 rounded-xl border-2 border-black shadow-neo transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 font-mono cursor-pointer"
           >
-            <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span id="copyCollectionBtnText">Copy Collection URL</span>
           </button>
           
           <button 
             type="button" 
             onclick="downloadCollectionJson()" 
-            class="w-full bg-zinc-900 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800/80 hover:text-white font-medium py-2.5 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2 font-mono"
+            class="w-full bg-[#161720] hover:bg-[#1E202B] text-zinc-100 font-bold text-xs py-3 px-4 rounded-xl border-2 border-black shadow-neo transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo-lg active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 font-mono cursor-pointer"
           >
-            <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download collection.json
+            <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download collection.json</span>
           </button>
         </div>
-        <p class="text-[11px] text-zinc-500 font-mono">
+        <p class="text-[11px] text-zinc-500 font-mono font-medium">
           Import in Nuvio App &rarr; Settings &rarr; Collections &rarr; Import from URL or File.
         </p>
       </div>
@@ -313,16 +361,21 @@ export function renderConfigureHtml(params: {
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-zinc-900 py-6 text-center text-xs text-zinc-600 font-mono">
-    <div class="flex items-center justify-center gap-2 mb-1.5 text-zinc-400">
-      <svg class="w-3.5 h-3.5" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64"/>
+  <footer class="border-t-2 border-black bg-[#12131A] py-6 text-center text-xs text-zinc-400 font-mono font-semibold">
+    <div class="flex items-center justify-center gap-2 mb-2 text-zinc-300">
+      <svg class="w-4 h-4" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
+        <g transform="translate(19.2, 19.2) scale(0.85)">
+          <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64"/>
+        </g>
       </svg>
-      <span class="font-medium text-zinc-300">${params.addonName}</span>
+      <span class="font-bold text-white">${params.addonName}</span>
+      <span>&bull;</span>
+      <span>v1.0.0</span>
     </div>
-    <div class="text-[11px] text-zinc-600">
-      <span>Powered by Cloudflare Workers &amp; Hono</span> &bull; 
-      <a href="/site.webmanifest" class="hover:text-zinc-400 underline decoration-zinc-800 transition">Manifest</a>
+    <div class="text-[11px] text-zinc-500">
+      <span>Zero ads. Multi-source relay for Nuvio &amp; Stremio. Powered by Cloudflare Workers &amp; Hono.</span>
+      <span class="mx-1">&bull;</span>
+      <a href="/site.webmanifest" class="hover:text-zinc-300 underline decoration-zinc-700 transition">Manifest</a>
     </div>
   </footer>
 
@@ -446,10 +499,10 @@ export function renderConfigureHtml(params: {
       const subsStatus = document.getElementById('subsStatus');
 
       btn.disabled = true;
-      diagIndicator.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse inline-block';
-      metaStatus.innerHTML = '<span class="text-zinc-500 animate-pulse">pinging...</span>';
-      streamStatus.innerHTML = '<span class="text-zinc-500 animate-pulse">pinging...</span>';
-      subsStatus.innerHTML = '<span class="text-zinc-500 animate-pulse">pinging...</span>';
+      diagIndicator.className = 'w-3 h-3 rounded-full border border-black bg-amber-400 animate-pulse inline-block shadow-[1px_1px_0px_#000]';
+      metaStatus.innerHTML = '<span class="text-zinc-500 font-bold animate-pulse">QUERYING...</span>';
+      streamStatus.innerHTML = '<span class="text-zinc-500 font-bold animate-pulse">QUERYING...</span>';
+      subsStatus.innerHTML = '<span class="text-zinc-500 font-bold animate-pulse">QUERYING...</span>';
 
       try {
         const query = new URLSearchParams({
@@ -467,11 +520,11 @@ export function renderConfigureHtml(params: {
 
         const allOk = data.metadata.ok && data.stream.ok && data.subs.ok;
         diagIndicator.className = allOk 
-          ? 'w-2 h-2 rounded-full bg-emerald-400 inline-block' 
-          : 'w-2 h-2 rounded-full bg-rose-400 inline-block';
+          ? 'w-3 h-3 rounded-full border border-black bg-emerald-400 inline-block shadow-[1px_1px_0px_#000]' 
+          : 'w-3 h-3 rounded-full border border-black bg-rose-500 inline-block shadow-[1px_1px_0px_#000]';
       } catch (err) {
-        metaStatus.innerHTML = '<span class="text-rose-400">Error</span>';
-        diagIndicator.className = 'w-2 h-2 rounded-full bg-rose-400 inline-block';
+        metaStatus.innerHTML = '<span class="text-rose-400 font-bold">Failed: ' + err.message + '</span>';
+        diagIndicator.className = 'w-3 h-3 rounded-full border border-black bg-rose-500 inline-block shadow-[1px_1px_0px_#000]';
       } finally {
         btn.disabled = false;
       }
@@ -479,9 +532,9 @@ export function renderConfigureHtml(params: {
 
     function renderStatus(el, result) {
       if (result.ok) {
-        el.innerHTML = '<span class="text-emerald-400 font-medium">ONLINE (' + result.latencyMs + 'ms)</span>';
+        el.innerHTML = '<span class="text-emerald-300 font-bold bg-[#133929] border border-black px-2 py-0.5 rounded shadow-[1px_1px_0px_#000]">READY (' + result.latencyMs + 'ms)</span>';
       } else {
-        el.innerHTML = '<span class="text-rose-400 font-medium">' + (result.error || 'OFFLINE') + '</span>';
+        el.innerHTML = '<span class="text-rose-300 font-bold bg-[#3D1418] border border-black px-2 py-0.5 rounded shadow-[1px_1px_0px_#000]">' + (result.error || 'OFFLINE') + '</span>';
       }
     }
 
