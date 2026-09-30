@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <title>Nuvio Subs Symbol</title>
+  <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64"
+        fill="none"
+        stroke="#18181b"
+        stroke-width="34"
+        stroke-linecap="round"
+        stroke-linejoin="round" />
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 300" width="256" height="300">
+  <title>Nuvio Subs Stacked Logo</title>
+  <g transform="translate(48, 16) scale(0.625)">
+    <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64"
+          fill="none"
+          stroke="#18181b"
+          stroke-width="34"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+  </g>
+  <text x="128" y="240" text-anchor="middle" font-family="Geist, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="700" letter-spacing="-1" fill="#18181b">nuvio<tspan font-weight="400" fill="#71717a">subs</tspan></text>
+</svg>

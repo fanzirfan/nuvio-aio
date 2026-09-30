@@ -19,7 +19,7 @@
     "hono"
   ],
   "author": "fanzirfan",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "dependencies": {
     "hono": "^4.7.4"
   },

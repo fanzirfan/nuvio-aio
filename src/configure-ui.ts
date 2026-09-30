@@ -11,6 +11,18 @@ export function renderConfigureHtml(params: {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${params.addonName} &mdash; AIO Relay</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#09090b">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:title" content="${params.addonName} &mdash; All-in-One Stremio &amp; Nuvio Relay">
+  <meta property="og:description" content="Single unified endpoint combining rich metadata catalogs, multi-provider streams with Live TV, and ad-free subtitles.">
+  <meta property="og:image" content="/icon-512.png">
+  <meta property="og:type" content="website">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,8 +60,12 @@ export function renderConfigureHtml(params: {
   <header class="border-b border-zinc-800/80 bg-[#09090b]/80 backdrop-blur-md sticky top-0 z-30">
     <div class="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
       <div class="flex items-center space-x-2.5">
-        <div class="w-6 h-6 rounded-md bg-zinc-100 flex items-center justify-center text-zinc-950 font-bold text-xs tracking-tight">
-          A
+        <div class="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-800 p-1 flex items-center justify-center shadow-sm">
+          <svg class="w-full h-full" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(19.2, 19.2) scale(0.85)">
+              <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64" stroke="#f4f4f5" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
         </div>
         <span class="text-sm font-semibold tracking-tight text-zinc-100">${params.addonName}</span>
         <span class="text-[11px] text-zinc-500 font-mono bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">v1.0.0</span>
@@ -67,6 +83,12 @@ export function renderConfigureHtml(params: {
   <main class="max-w-2xl mx-auto w-full px-4 py-8 flex-1">
     <!-- Header Title -->
     <div class="mb-6">
+      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900/90 border border-zinc-800 text-[11px] font-mono text-zinc-300 mb-2.5">
+        <svg class="w-3 h-3 text-zinc-200" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64"/>
+        </svg>
+        <span>Nuvio Ecosystem &bull; Stremio Protocol</span>
+      </div>
       <h1 class="text-xl font-medium tracking-tight text-zinc-100">All-in-One Relay Engine</h1>
       <p class="text-xs text-zinc-400 mt-1 leading-relaxed">
         Single unified Stremio endpoint combining rich metadata catalogs, multi-provider streams with Live TV, and ad-free subtitles.
@@ -292,7 +314,16 @@ export function renderConfigureHtml(params: {
 
   <!-- Footer -->
   <footer class="border-t border-zinc-900 py-6 text-center text-xs text-zinc-600 font-mono">
-    <span>${params.addonName}</span> &bull; <span>Powered by Cloudflare Workers & Hono</span>
+    <div class="flex items-center justify-center gap-2 mb-1.5 text-zinc-400">
+      <svg class="w-3.5 h-3.5" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="34" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64"/>
+      </svg>
+      <span class="font-medium text-zinc-300">${params.addonName}</span>
+    </div>
+    <div class="text-[11px] text-zinc-600">
+      <span>Powered by Cloudflare Workers &amp; Hono</span> &bull; 
+      <a href="/site.webmanifest" class="hover:text-zinc-400 underline decoration-zinc-800 transition">Manifest</a>
+    </div>
   </footer>
 
   <script>

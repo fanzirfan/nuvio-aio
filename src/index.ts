@@ -6,6 +6,7 @@ import { getCombinedManifest } from './manifest.ts';
 import { relayCatalog, relayMeta, relayStream, relaySubtitles } from './relay.ts';
 import { renderConfigureHtml } from './configure-ui.ts';
 import { getCollectionJson } from './collection.ts';
+import { getBrandingAsset } from './branding-assets.ts';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -18,6 +19,34 @@ app.use(
     allowHeaders: ['*'],
   })
 );
+
+// ---------------------------------------------------------------------------
+// Static Branding & Favicon Endpoints
+// ---------------------------------------------------------------------------
+function serveAsset(c: any, assetPath: string) {
+  const asset = getBrandingAsset(assetPath);
+  if (!asset) {
+    return c.text('Not Found', 404);
+  }
+  return c.body(asset.data, 200, {
+    'Content-Type': asset.mime,
+    'Cache-Control': 'public, max-age=604800, immutable',
+  });
+}
+
+app.get('/favicon.ico', (c) => serveAsset(c, 'favicon.ico'));
+app.get('/favicon.svg', (c) => serveAsset(c, 'favicon.svg'));
+app.get('/favicon-16.png', (c) => serveAsset(c, 'favicon-16.png'));
+app.get('/favicon-32.png', (c) => serveAsset(c, 'favicon-32.png'));
+app.get('/favicon-48.png', (c) => serveAsset(c, 'favicon-48.png'));
+app.get('/apple-touch-icon.png', (c) => serveAsset(c, 'apple-touch-icon.png'));
+app.get('/icon-192.png', (c) => serveAsset(c, 'icon-192.png'));
+app.get('/icon-512.png', (c) => serveAsset(c, 'icon-512.png'));
+app.get('/maskable-512.png', (c) => serveAsset(c, 'maskable-512.png'));
+app.get('/site.webmanifest', (c) => serveAsset(c, 'site.webmanifest'));
+app.get('/logo.svg', (c) => serveAsset(c, 'logo.svg'));
+app.get('/logo.png', (c) => serveAsset(c, 'logo.png'));
+app.get('/branding/:path{.+}', (c) => serveAsset(c, c.req.param('path')));
 
 // ---------------------------------------------------------------------------
 // Configuration Web UI
@@ -100,7 +129,9 @@ app.get('/api/ping', async (c) => {
 // ---------------------------------------------------------------------------
 app.get('/manifest.json', async (c) => {
   const config = getResolvedConfig(c.env);
-  const manifest = await getCombinedManifest(config);
+  const currentHost = new URL(c.req.url).origin;
+  const logoUrl = config.logoUrl.startsWith('http') ? config.logoUrl : `${currentHost}${config.logoUrl}`;
+  const manifest = await getCombinedManifest({ ...config, logoUrl });
   return c.json(manifest, 200, {
     'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
   });
@@ -109,7 +140,9 @@ app.get('/manifest.json', async (c) => {
 app.get('/:config/manifest.json', async (c) => {
   const userConfig = decodeConfig(c.req.param('config'));
   const config = getResolvedConfig(c.env, userConfig);
-  const manifest = await getCombinedManifest(config);
+  const currentHost = new URL(c.req.url).origin;
+  const logoUrl = config.logoUrl.startsWith('http') ? config.logoUrl : `${currentHost}${config.logoUrl}`;
+  const manifest = await getCombinedManifest({ ...config, logoUrl });
   return c.json(manifest, 200, {
     'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
   });

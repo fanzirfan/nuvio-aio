@@ -7,7 +7,7 @@ export const FALLBACK_DEFAULTS = {
   METADATA_URL: '',
   STREAM_URL: '',
   SUBS_URL: '',
-  LOGO_URL: 'https://raw.githubusercontent.com/stremio/stremio-addon-sdk/master/docs/logo.png',
+  LOGO_URL: '/icon-512.png',
 };
 
 /**

@@ -147,5 +147,59 @@ describe('fanzirfan AIO Addon Test Suite', () => {
     assert.ok(Array.isArray(data));
     assert.strictEqual(data.length, 3);
   });
+
+  it('should serve branding assets (favicons, manifests, and icons)', async () => {
+    // Favicon SVG
+    const svgRes = await app.request('/favicon.svg');
+    assert.strictEqual(svgRes.status, 200);
+    assert.strictEqual(svgRes.headers.get('content-type'), 'image/svg+xml');
+    const svgText = await svgRes.text();
+    assert.ok(svgText.includes('<svg'));
+
+    // Favicon ICO
+    const icoRes = await app.request('/favicon.ico');
+    assert.strictEqual(icoRes.status, 200);
+    assert.strictEqual(icoRes.headers.get('content-type'), 'image/x-icon');
+
+    // Apple Touch Icon
+    const appleRes = await app.request('/apple-touch-icon.png');
+    assert.strictEqual(appleRes.status, 200);
+    assert.strictEqual(appleRes.headers.get('content-type'), 'image/png');
+
+    // Web App Manifest
+    const manifestRes = await app.request('/site.webmanifest');
+    assert.strictEqual(manifestRes.status, 200);
+    assert.strictEqual(manifestRes.headers.get('content-type'), 'application/manifest+json');
+    const manifestJson = (await manifestRes.json()) as any;
+    assert.ok(manifestJson.icons);
+
+    // Icon 512
+    const iconRes = await app.request('/icon-512.png');
+    assert.strictEqual(iconRes.status, 200);
+    assert.strictEqual(iconRes.headers.get('content-type'), 'image/png');
+
+    // Branded logo via /branding path
+    const brandSvgRes = await app.request('/branding/dist/horizontal/nuvio-horizontal-white.svg');
+    assert.strictEqual(brandSvgRes.status, 200);
+    assert.strictEqual(brandSvgRes.headers.get('content-type'), 'image/svg+xml');
+  });
+
+  it('should include branding links and SVG logo in root UI /', async () => {
+    const res = await app.request('/');
+    assert.strictEqual(res.status, 200);
+    const html = await res.text();
+    assert.ok(html.includes('/favicon.svg'));
+    assert.ok(html.includes('/site.webmanifest'));
+    assert.ok(html.includes('/apple-touch-icon.png'));
+    assert.ok(html.includes('Nuvio Ecosystem'));
+  });
+
+  it('should include Nuvio logo in manifest', async () => {
+    const res = await app.request('/manifest.json');
+    assert.strictEqual(res.status, 200);
+    const data = (await res.json()) as any;
+    assert.ok(data.logo);
+    assert.ok(data.logo.includes('icon-512.png'));
+  });
 });
 

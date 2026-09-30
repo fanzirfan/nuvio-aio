@@ -12,6 +12,7 @@ const DEFAULT_FALLBACK_MANIFEST: StremioManifest = {
   version: '1.0.0',
   name: 'fanzirfan AIO',
   description: 'All-in-One Stremio Addon relaying AIOMetadata, Pengu Streams & Live TV, and Nuvio Clean Subtitles.',
+  logo: '/icon-512.png',
   resources: ['catalog', 'meta', 'stream', 'subtitles'],
   types: ['movie', 'series', 'anime', 'anime.movie', 'anime.series', 'tv', 'Trakt', 'collection'],
   idPrefixes: [
@@ -58,6 +59,7 @@ export async function getCombinedManifest(params: {
       id: params.addonId,
       name: params.addonName,
       description: params.addonDesc,
+      logo: params.logoUrl || DEFAULT_FALLBACK_MANIFEST.logo,
       behaviorHints: {
         configurable: true,
         configurationRequired: true,
