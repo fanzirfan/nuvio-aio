@@ -100,11 +100,15 @@ export function renderConfigureHtml(params: {
           <span class="text-[11px] font-mono font-bold bg-[#A7F3D0] text-black border-2 border-black px-2 py-0.5 rounded shadow-[1.5px_1.5px_0px_#000]">v1.0.0</span>
         </div>
       </div>
-      <div class="flex items-center space-x-3 text-xs">
-        <span class="font-mono font-bold bg-[#161720] text-[#A7F3D0] border-2 border-black px-2.5 py-1 rounded-lg shadow-neo-sm inline-flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-[#A7F3D0] animate-pulse"></span>
-          Edge Active
-        </span>
+      <div class="flex items-center gap-2 text-xs">
+        <a href="https://nuvio-subs.fanzirfan.workers.dev/" target="_blank" rel="noopener" title="Nuvio Subs &mdash; zero-ad subtitle engine behind the Subs upstream (Live web app)" class="font-mono font-bold bg-[#161720] hover:bg-[#1E202B] text-zinc-200 border-2 border-black px-2.5 py-1.5 rounded-lg shadow-neo-sm transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none inline-flex items-center gap-1.5">
+          <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+          <span class="hidden sm:inline">nuvio-subs</span><span class="sm:hidden">Subs</span>
+        </a>
+        <a href="https://github.com/fanzirfan/nuvio-aio" target="_blank" rel="noopener" title="Source code for this relay on GitHub" class="font-mono font-bold bg-[#161720] hover:bg-[#1E202B] text-zinc-200 border-2 border-black px-2.5 py-1.5 rounded-lg shadow-neo-sm transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none inline-flex items-center gap-1.5">
+          <svg class="w-4 h-4 shrink-0 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
       </div>
     </div>
   </header>
@@ -374,6 +378,17 @@ export function renderConfigureHtml(params: {
       <span class="font-bold text-white">${params.addonName}</span>
       <span>&bull;</span>
       <span>v1.0.0</span>
+    </div>
+    <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] text-zinc-500 mb-2">
+      <span>Source:</span>
+      <a href="https://github.com/fanzirfan/nuvio-aio" target="_blank" rel="noopener" class="text-zinc-300 hover:text-white underline decoration-dotted underline-offset-4 transition-colors">fanzirfan/nuvio-aio</a>
+      <span class="text-zinc-700">&bull;</span>
+      <span>Related:</span>
+      <a href="https://github.com/fanzirfan/nuvio-subs" target="_blank" rel="noopener" class="text-zinc-300 hover:text-white underline decoration-dotted underline-offset-4 transition-colors">nuvio-subs</a>
+      <span class="text-zinc-700">&bull;</span>
+      <a href="https://nuvio-subs.fanzirfan.workers.dev/configure" target="_blank" rel="noopener" class="text-[#B8A9FF] hover:text-white underline decoration-dotted underline-offset-4 transition-colors">nuvio-subs live</a>
+      <span class="text-zinc-700">&bull;</span>
+      <a href="https://github.com/fanzirfan" target="_blank" rel="noopener" class="text-zinc-300 hover:text-white underline decoration-dotted underline-offset-4 transition-colors">@fanzirfan</a>
     </div>
     <div class="text-[11px] text-zinc-500">
       <span>Zero ads. Multi-source relay for Nuvio &amp; Stremio. Powered by Cloudflare Workers &amp; Hono.</span>

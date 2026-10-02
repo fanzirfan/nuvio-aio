@@ -9,6 +9,8 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/fanzirfan/nuvio-aio"><img src="https://img.shields.io/badge/Repo-fanzirfan%2Fnuvio--aio-181717.svg?logo=github&logoColor=white" alt="GitHub repository" /></a>
+  <a href="https://nuvio-aio.fanzirfan.workers.dev/"><img src="https://img.shields.io/badge/Live-Configure%20UI-F38020.svg?logo=cloudflare&logoColor=white" alt="Live configure UI" /></a>
   <a href="https://workers.cloudflare.com/"><img src="https://img.shields.io/badge/Cloudflare-Workers-F38020.svg?logo=cloudflare&logoColor=white" alt="Cloudflare Workers" /></a>
   <a href="https://hono.dev/"><img src="https://img.shields.io/badge/Hono-v4.7-E36002.svg" alt="Hono" /></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.8-blue.svg?logo=typescript&logoColor=white" alt="TypeScript" /></a>
@@ -24,7 +26,21 @@
 
 1. **Catalogs &amp; Rich Metadata:** Powered by [AIOMetadata](https://aiometadata.elfhosted.com/) (IMDb, TMDB, TVDB, MyAnimeList, and 33+ streaming provider carousels).
 2. **Video Streams &amp; Live TV:** Powered by [PenguPlay](https://pengu.uk/) (multi-source video playback, quality selectors, and live broadcast channels).
-3. **Clean &amp; Ad-Free Subtitles:** Powered by [Nuvio Subs](https://nuvio-subs.fanzirfan.workers.dev/) + PenguPlay (queried concurrently, deduplicated, prioritizing ad-free releases).
+3. **Clean &amp; Ad-Free Subtitles:** Powered by [Nuvio Subs](https://github.com/fanzirfan/nuvio-subs) ([live configurator](https://nuvio-subs.fanzirfan.workers.dev/configure)) + PenguPlay (queried concurrently, deduplicated, prioritizing ad-free releases).
+
+---
+
+## Related Projects &amp; Repositories
+
+| Project | Repository | Live Endpoint | Role |
+|---|---|---|---|
+| **nuvio-aio** (this repo) | [github.com/fanzirfan/nuvio-aio](https://github.com/fanzirfan/nuvio-aio) | [nuvio-aio.fanzirfan.workers.dev](https://nuvio-aio.fanzirfan.workers.dev/) | All-in-One metadata, stream &amp; subtitle relay |
+| **nuvio-subs** | [github.com/fanzirfan/nuvio-subs](https://github.com/fanzirfan/nuvio-subs) | [nuvio-subs.fanzirfan.workers.dev/configure](https://nuvio-subs.fanzirfan.workers.dev/configure) | Zero-ad subtitle engine (SubDL, OpenSubtitles, Subsource) used as this relay's subtitle upstream |
+
+The configure UI (`/`) exposes both links as header chips and in the footer.
+
+Third-party upstreams relayed by this addon: [AIOMetadata](https://aiometadata.elfhosted.com/) (catalogs/meta) and [PenguPlay](https://pengu.uk/) (streams/Live TV).
+More of my projects: [github.com/fanzirfan](https://github.com/fanzirfan).
 
 ---
 
@@ -86,6 +102,7 @@ Access the root URL (`/`) in your browser to access the interactive web manageme
 - **Custom Endpoint Encoder:** Configure custom upstream URLs with live URL generation and base64 configuration hashing (`/:config/manifest.json`).
 - **One-Click Installation:** Direct links to install into desktop/mobile Stremio (`stremio://`) or open directly in Stremio Web.
 - **Nuvio Collections Station:** Copy or download the pre-configured Nuvio collection layout.
+- **GitHub &amp; Related Projects:** Header chips and footer link to this repo (`fanzirfan/nuvio-aio`), the sibling `nuvio-subs` subtitle engine repo, and its live configurator.
 
 ---
 
