@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "typecheck": "tsc --noEmit",
+    "types": "wrangler types",
+    "typecheck": "npm run types && tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/aio.test.ts"
   },
   "keywords": [
@@ -24,8 +25,11 @@
     "hono": "^4.7.4"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250224.0",
     "typescript": "^5.8.2",
-    "wrangler": "^3.114.0"
+    "wrangler": "^4.147.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "workerd@1.20261001.1": true
   }
 }

@@ -8,7 +8,7 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "lib": ["ESNext"],
-    "types": ["@cloudflare/workers-types"]
+    "types": []
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "worker-configuration.d.ts"]
 }

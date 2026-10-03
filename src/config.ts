@@ -1,4 +1,4 @@
-import type { AddonConfig, Env } from './types.ts';
+import type { AddonConfig } from './types.ts';
 
 export const FALLBACK_DEFAULTS = {
   ADDON_NAME: 'fanzirfan AIO',
@@ -67,7 +67,7 @@ export function encodeConfig(config: AddonConfig): string {
 /**
  * Get resolved URLs by merging ENV defaults and user config
  */
-export function getResolvedConfig(env?: Env, userConfig?: AddonConfig) {
+export function getResolvedConfig(env?: Partial<Env>, userConfig?: AddonConfig) {
   const safeEnv = env || {};
   const metadataBase = normalizeBaseUrl(
     userConfig?.metadataUrl || safeEnv.DEFAULT_METADATA_URL || FALLBACK_DEFAULTS.METADATA_URL

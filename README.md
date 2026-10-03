@@ -144,6 +144,7 @@ Open `http://localhost:8787` in your browser.
 npm test
 npm run typecheck
 ```
+`typecheck` regenerates `worker-configuration.d.ts` from `wrangler.jsonc` (`wrangler types`) before running `tsc`, so runtime/binding types stay in sync with the config.
 
 ### 4. Deploy to Cloudflare Workers
 ```bash
