@@ -2,7 +2,18 @@ import type { StremioSubtitle } from './types.ts';
 
 const FETCH_TIMEOUT_MS = 20000;
 
-async function fetchWithTimeout(url: string, headers: Record<string, string> = {}): Promise<Response> {
+interface UpstreamText {
+  ok: boolean;
+  status: number;
+  body: string;
+}
+
+/**
+ * Fetch a URL and read its full body under one timeout budget.
+ * The abort signal stays armed until the body is consumed, so a slow
+ * or unbounded upstream body cannot outlive the timeout.
+ */
+async function fetchTextWithTimeout(url: string, headers: Record<string, string> = {}): Promise<UpstreamText> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
@@ -15,7 +26,8 @@ async function fetchWithTimeout(url: string, headers: Record<string, string> = {
         ...headers,
       },
     });
-    return res;
+    const body = await res.text();
+    return { ok: res.ok, status: res.status, body };
   } finally {
     clearTimeout(timeoutId);
   }
@@ -40,11 +52,10 @@ export async function relayCatalog(
   const targetUrl = `${targetBase}/catalog/${type}/${pathParam}`;
 
   try {
-    const upstreamRes = await fetchWithTimeout(targetUrl);
-    const body = await upstreamRes.text();
+    const upstream = await fetchTextWithTimeout(targetUrl);
 
-    return new Response(body, {
-      status: upstreamRes.status,
+    return new Response(upstream.body, {
+      status: upstream.status,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Access-Control-Allow-Origin': '*',
@@ -84,11 +95,10 @@ export async function relayMeta(
   const targetUrl = `${targetBase}/meta/${type}/${pathParam}`;
 
   try {
-    const upstreamRes = await fetchWithTimeout(targetUrl);
-    const body = await upstreamRes.text();
+    const upstream = await fetchTextWithTimeout(targetUrl);
 
-    return new Response(body, {
-      status: upstreamRes.status,
+    return new Response(upstream.body, {
+      status: upstream.status,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Access-Control-Allow-Origin': '*',
@@ -126,8 +136,8 @@ export async function relayStream(
   const targetUrl = `${streamBase}/stream/${type}/${pathParam}`;
 
   try {
-    const upstreamRes = await fetchWithTimeout(targetUrl);
-    const data = (await upstreamRes.json()) as { streams?: Array<Record<string, any>> };
+    const upstream = await fetchTextWithTimeout(targetUrl);
+    const data = JSON.parse(upstream.body) as { streams?: Array<Record<string, any>> };
 
     if (Array.isArray(data?.streams)) {
       data.streams = data.streams
@@ -156,7 +166,7 @@ export async function relayStream(
     }
 
     return new Response(JSON.stringify(data), {
-      status: upstreamRes.status,
+      status: upstream.status,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Access-Control-Allow-Origin': '*',
@@ -197,8 +207,8 @@ export async function relaySubtitles(
 
   try {
     const [nuvioRes, penguRes] = await Promise.allSettled([
-      fetchWithTimeout(nuvioUrl).then((r) => (r.ok ? (r.json() as Promise<{ subtitles?: StremioSubtitle[] }>) : null)),
-      fetchWithTimeout(penguUrl).then((r) => (r.ok ? (r.json() as Promise<{ subtitles?: StremioSubtitle[] }>) : null)),
+      fetchTextWithTimeout(nuvioUrl).then((r) => (r.ok ? (JSON.parse(r.body) as { subtitles?: StremioSubtitle[] }) : null)),
+      fetchTextWithTimeout(penguUrl).then((r) => (r.ok ? (JSON.parse(r.body) as { subtitles?: StremioSubtitle[] }) : null)),
     ]);
 
     const nuvioSubs: StremioSubtitle[] =

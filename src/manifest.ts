@@ -3,6 +3,22 @@ import type { StremioManifest } from './types.ts';
 // In-memory manifest cache per worker instance
 const manifestCache = new Map<string, { manifest: StremioManifest; timestamp: number }>();
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const CACHE_MAX_ENTRIES = 100;
+
+/**
+ * Fetch an upstream manifest with a hard timeout; the abort signal stays
+ * armed until the body is fully read.
+ */
+function fetchUpstreamManifest(url: string): Promise<StremioManifest | null> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  return fetch(url, {
+    headers: { 'User-Agent': 'fanzirfan-aio/1.0' },
+    signal: controller.signal,
+  })
+    .then((r) => (r.ok ? (r.json() as Promise<StremioManifest>) : null))
+    .finally(() => clearTimeout(timeoutId));
+}
 
 /**
  * Fallback manifest when upstreams are unreachable during manifest build
@@ -77,15 +93,11 @@ export async function getCombinedManifest(params: {
 
   try {
     const metaPromise = params.metadataBase
-      ? fetch(`${params.metadataBase}/manifest.json`, {
-          headers: { 'User-Agent': 'fanzirfan-aio/1.0' },
-        }).then((r) => (r.ok ? r.json() : null))
+      ? fetchUpstreamManifest(`${params.metadataBase}/manifest.json`)
       : Promise.resolve(null);
 
     const streamPromise = params.streamBase
-      ? fetch(`${params.streamBase}/manifest.json`, {
-          headers: { 'User-Agent': 'fanzirfan-aio/1.0' },
-        }).then((r) => (r.ok ? r.json() : null))
+      ? fetchUpstreamManifest(`${params.streamBase}/manifest.json`)
       : Promise.resolve(null);
 
     const [metaManifestRes, streamManifestRes] = await Promise.allSettled([
@@ -146,6 +158,11 @@ export async function getCombinedManifest(params: {
     };
 
     manifestCache.set(cacheKey, { manifest: combinedManifest, timestamp: now });
+    // Bound memory: evict oldest entries so unique :config floods can't grow the map forever.
+    if (manifestCache.size > CACHE_MAX_ENTRIES) {
+      const oldestKey = manifestCache.keys().next().value;
+      if (oldestKey !== undefined) manifestCache.delete(oldestKey);
+    }
     return combinedManifest;
   } catch (err) {
     console.error('Error constructing combined manifest:', err);

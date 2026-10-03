@@ -113,14 +113,20 @@ export const BRANDING_ASSETS: Record<string, BrandingAsset> = {
   }
 };
 
+function lookupAsset(key: string): BrandingAsset | undefined {
+  // hasOwn guard: request-path keys like '__proto__'/'constructor' must not
+  // resolve through the prototype chain (they used to return 500s from atob).
+  return Object.hasOwn(BRANDING_ASSETS, key) ? BRANDING_ASSETS[key] : undefined;
+}
+
 export function getBrandingAsset(requestPath: string): { data: Uint8Array | string; mime: string } | null {
   const cleanPath = requestPath.replace(/^\/+/, '').replace(/\\+/g, '/');
   
   // Direct file matches
-  let asset = BRANDING_ASSETS[cleanPath] ||
-    BRANDING_ASSETS['branding/' + cleanPath] ||
-    BRANDING_ASSETS['branding/dist/symbol/' + cleanPath] ||
-    BRANDING_ASSETS['branding/dist/horizontal/' + cleanPath];
+  let asset = lookupAsset(cleanPath) ||
+    lookupAsset('branding/' + cleanPath) ||
+    lookupAsset('branding/dist/symbol/' + cleanPath) ||
+    lookupAsset('branding/dist/horizontal/' + cleanPath);
   
   // Specific alias routes
   if (!asset) {

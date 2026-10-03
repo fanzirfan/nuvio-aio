@@ -1,6 +1,5 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import type { Env } from './types.ts';
 import { decodeConfig, getResolvedConfig } from './config.ts';
 import { getCombinedManifest } from './manifest.ts';
 import { relayCatalog, relayMeta, relayStream, relaySubtitles } from './relay.ts';
@@ -52,17 +51,15 @@ app.get('/branding/:path{.+}', (c) => serveAsset(c, c.req.param('path')));
 // Configuration Web UI
 // ---------------------------------------------------------------------------
 app.get('/', (c) => {
-  const serverConfig = getResolvedConfig(c.env);
-  const currentHost = new URL(c.req.url).origin;
+  // Inputs start empty on purpose: server-configured upstreams can carry auth
+  // tokens and must not be published to page visitors. Empty inputs encode no
+  // config, so the plain manifest/collection paths resolve server defaults
+  // at request time instead.
   const html = renderConfigureHtml({
-    currentHost,
-    metadataUrl: serverConfig.metadataBase ? `${serverConfig.metadataBase}/manifest.json` : '',
-    streamUrl: serverConfig.streamBase ? `${serverConfig.streamBase}/manifest.json` : '',
-    subsUrl: serverConfig.subsBase ? `${serverConfig.subsBase}/manifest.json` : '',
-    serverDefaultMeta: serverConfig.metadataBase ? `${serverConfig.metadataBase}/manifest.json` : '',
-    serverDefaultStream: serverConfig.streamBase ? `${serverConfig.streamBase}/manifest.json` : '',
-    serverDefaultSubs: serverConfig.subsBase ? `${serverConfig.subsBase}/manifest.json` : '',
-    addonName: serverConfig.addonName,
+    metadataUrl: '',
+    streamUrl: '',
+    subsUrl: '',
+    addonName: getResolvedConfig(c.env).addonName,
   });
   return c.html(html);
 });
@@ -73,18 +70,13 @@ app.get('/configure', (c) => {
 
 app.get('/:config/configure', (c) => {
   const userConfig = decodeConfig(c.req.param('config'));
-  const config = getResolvedConfig(c.env, userConfig);
-  const serverConfig = getResolvedConfig(c.env);
-  const currentHost = new URL(c.req.url).origin;
+  // Prefill from the visitor's own encoded config only — never merged with
+  // server defaults, which could otherwise leak operator upstream URLs.
   const html = renderConfigureHtml({
-    currentHost,
-    metadataUrl: config.metadataBase ? `${config.metadataBase}/manifest.json` : '',
-    streamUrl: config.streamBase ? `${config.streamBase}/manifest.json` : '',
-    subsUrl: config.subsBase ? `${config.subsBase}/manifest.json` : '',
-    serverDefaultMeta: serverConfig.metadataBase ? `${serverConfig.metadataBase}/manifest.json` : '',
-    serverDefaultStream: serverConfig.streamBase ? `${serverConfig.streamBase}/manifest.json` : '',
-    serverDefaultSubs: serverConfig.subsBase ? `${serverConfig.subsBase}/manifest.json` : '',
-    addonName: config.addonName,
+    metadataUrl: userConfig.metadataUrl || '',
+    streamUrl: userConfig.streamUrl || '',
+    subsUrl: userConfig.subsUrl || '',
+    addonName: getResolvedConfig(c.env).addonName,
   });
   return c.html(html);
 });
@@ -248,7 +240,8 @@ app.notFound((c) => {
 
 app.onError((err, c) => {
   console.error('Unhandled error:', err);
-  return c.json({ error: 'Internal Server Error', message: err.message }, 500);
+  // Full detail stays in the logs; never echo err.message to clients.
+  return c.json({ error: 'Internal Server Error' }, 500);
 });
 
 export default app;

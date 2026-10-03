@@ -4,15 +4,6 @@ export interface AddonConfig {
   subsUrl?: string;
 }
 
-export interface Env {
-  ADDON_NAME?: string;
-  ADDON_ID?: string;
-  ADDON_DESC?: string;
-  DEFAULT_METADATA_URL?: string;
-  DEFAULT_STREAM_URL?: string;
-  DEFAULT_SUBS_URL?: string;
-}
-
 export interface StremioCatalog {
   id: string;
   type: string;

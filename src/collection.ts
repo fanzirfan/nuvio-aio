@@ -881,7 +881,7 @@ export function getCollectionJson(addonId = 'irfan.nuvio.aio'): string { const t
 ];
   const jsonStr = JSON.stringify(template, null, 2);
   if (addonId !== 'irfan.nuvio.aio') {
-    return jsonStr.split('"addonId": "irfan.nuvio.aio"').join(`"addonId": "${addonId}"`);
+    return jsonStr.split('"addonId": "irfan.nuvio.aio"').join(`"addonId": ${JSON.stringify(addonId)}`);
   }
   return jsonStr;
 }

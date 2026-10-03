@@ -1,19 +1,25 @@
+function escapeHtml(str: string): string {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export function renderConfigureHtml(params: {
-  currentHost: string;
   metadataUrl: string;
   streamUrl: string;
   subsUrl: string;
-  serverDefaultMeta: string;
-  serverDefaultStream: string;
-  serverDefaultSubs: string;
   addonName: string;
 }): string {
+  const addonName = escapeHtml(params.addonName);
   return `<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${params.addonName} &mdash; AIO Relay</title>
+  <title>${addonName} &mdash; AIO Relay</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
@@ -22,7 +28,7 @@ export function renderConfigureHtml(params: {
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#0D0E13">
   <meta name="color-scheme" content="dark">
-  <meta property="og:title" content="${params.addonName} &mdash; All-in-One Stremio &amp; Nuvio Relay">
+  <meta property="og:title" content="${addonName} &mdash; All-in-One Stremio &amp; Nuvio Relay">
   <meta property="og:description" content="Single unified endpoint combining rich metadata catalogs, multi-provider streams with Live TV, and ad-free subtitles.">
   <meta property="og:image" content="/icon-512.png">
   <meta property="og:type" content="website">
@@ -96,7 +102,7 @@ export function renderConfigureHtml(params: {
           </svg>
         </a>
         <div class="flex items-center space-x-2">
-          <span class="text-base font-extrabold tracking-tight text-white">${params.addonName}</span>
+          <span class="text-base font-extrabold tracking-tight text-white">${addonName}</span>
           <span class="text-[11px] font-mono font-bold bg-[#A7F3D0] text-black border-2 border-black px-2 py-0.5 rounded shadow-[1.5px_1.5px_0px_#000]">v1.0.0</span>
         </div>
       </div>
@@ -173,7 +179,7 @@ export function renderConfigureHtml(params: {
           <input 
             type="text" 
             id="metadataUrl" 
-            value="${params.metadataUrl}" 
+            value="${escapeHtml(params.metadataUrl)}"
             placeholder="https://aiometadata.../manifest.json" 
             class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
@@ -198,7 +204,7 @@ export function renderConfigureHtml(params: {
           <input 
             type="text" 
             id="streamUrl" 
-            value="${params.streamUrl}" 
+            value="${escapeHtml(params.streamUrl)}"
             placeholder="https://pengu.uk/.../manifest.json" 
             class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
@@ -223,7 +229,7 @@ export function renderConfigureHtml(params: {
           <input 
             type="text" 
             id="subsUrl" 
-            value="${params.subsUrl}" 
+            value="${escapeHtml(params.subsUrl)}"
             placeholder="https://nuvio-subs.../manifest.json" 
             class="w-full bg-[#0A0B0F] border-2 border-black rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#B8A9FF] focus:shadow-neo-lavender transition"
           />
@@ -375,7 +381,7 @@ export function renderConfigureHtml(params: {
           <path d="M 76 192 L 76 98 C 76 60 104 60 116 84 L 140 172 C 152 196 180 196 180 158 L 180 64"/>
         </g>
       </svg>
-      <span class="font-bold text-white">${params.addonName}</span>
+      <span class="font-bold text-white">${addonName}</span>
       <span>&bull;</span>
       <span>v1.0.0</span>
     </div>
@@ -398,9 +404,6 @@ export function renderConfigureHtml(params: {
   </footer>
 
   <script>
-    const serverDefaultMeta = ${JSON.stringify(params.serverDefaultMeta)};
-    const serverDefaultStream = ${JSON.stringify(params.serverDefaultStream)};
-    const serverDefaultSubs = ${JSON.stringify(params.serverDefaultSubs)};
     const host = window.location.origin;
 
     const metaInput = document.getElementById('metadataUrl');
@@ -424,15 +427,9 @@ export function renderConfigureHtml(params: {
       const subs = subsInput.value.trim();
 
       const isEmpty = (!meta && !stream && !subs);
-      const hasServerDefaults = Boolean(serverDefaultMeta || serverDefaultStream || serverDefaultSubs);
-      const matchesServerDefaults = hasServerDefaults && (
-        meta === serverDefaultMeta &&
-        stream === serverDefaultStream &&
-        subs === serverDefaultSubs
-      );
 
       let manifestPath = 'manifest.json';
-      if (!isEmpty && !matchesServerDefaults) {
+      if (!isEmpty) {
         const config = {
           metadataUrl: meta,
           streamUrl: stream,
@@ -455,15 +452,9 @@ export function renderConfigureHtml(params: {
       const subs = subsInput.value.trim();
 
       const isEmpty = (!meta && !stream && !subs);
-      const hasServerDefaults = Boolean(serverDefaultMeta || serverDefaultStream || serverDefaultSubs);
-      const matchesServerDefaults = hasServerDefaults && (
-        meta === serverDefaultMeta &&
-        stream === serverDefaultStream &&
-        subs === serverDefaultSubs
-      );
 
       let collectionPath = 'collection.json';
-      if (!isEmpty && !matchesServerDefaults) {
+      if (!isEmpty) {
         const config = {
           metadataUrl: meta,
           streamUrl: stream,
@@ -524,9 +515,11 @@ export function renderConfigureHtml(params: {
     }
 
     function resetDefaults() {
-      metaInput.value = serverDefaultMeta;
-      streamInput.value = serverDefaultStream;
-      subsInput.value = serverDefaultSubs;
+      // Server defaults stay server-side; empty inputs mean "use server config",
+      // which is exactly the default state.
+      metaInput.value = '';
+      streamInput.value = '';
+      subsInput.value = '';
       updateUrl();
     }
 
